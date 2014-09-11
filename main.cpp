@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
-
 #include "NodeInterface.h"
-#include "Node.h"
-#include "Identifier.h"
-
 
 using namespace std;
 

@@ -2,7 +2,7 @@
 CC=g++
 CFLAGS=-c -Wall
 LDFLAGS=
-SOURCES=main.cpp Node.cpp 
+SOURCES= $(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 	EXECUTABLE=chord
 
@@ -18,4 +18,4 @@ run:
 	./$(EXECUTABLE)
 
 clean:
-	rm $(EXECUTABLE) $(OBJECTS)
+	rm -f $(EXECUTABLE) $(OBJECTS)
