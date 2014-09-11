@@ -2,7 +2,7 @@
 CC=g++
 CFLAGS=-c -Wall
 LDFLAGS=
-SOURCES=main.cpp 
+SOURCES=main.cpp Node.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
 	EXECUTABLE=chord
 
