@@ -8,7 +8,7 @@
 #include <string>
 #include <iostream>
 #include "Identifier.h"
-
+class FingerTable; 
 class Node {
   private:  
       Identifier identifier;  
@@ -16,8 +16,11 @@ class Node {
       Node *successor;
       std::string address;
       int port;
-  
+      FingerTable *fingerTable;
+
   public:
+    Node() {
+    }
     Identifier getIdentifier() {return identifier;}
     Node * findSuccessor(Identifier id);
     Node * findPredecessor(Identifier id);
@@ -26,5 +29,7 @@ class Node {
     void create();
 };
 
+// This is important here.
+#include "FingerTable.h"
 
 #endif 

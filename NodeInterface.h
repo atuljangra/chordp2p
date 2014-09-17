@@ -1,6 +1,11 @@
 /*
+ * NOT CURRENTLY USING THIS. THIS WILL BE USEFUL WHEN WE ADD THE RPC.
  * This is the interfacet that is implemented by each Node.
+ *
  */
+
+#ifndef NODEINTERFACE_H
+#define NODEINTERFACE_H
 #include <iostream>
 #include "Identifier.h"
 
@@ -24,4 +29,4 @@ class NodeInterface {
     virtual ~NodeInterface() {};
 };
 
-
+#endif

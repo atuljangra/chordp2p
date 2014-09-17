@@ -1,7 +1,7 @@
 #include "Node.h"
 #include "utils.h"
 using namespace std;
-
+extern int maxLen;
 Node* Node::findSuccessor(Identifier id) {
     // If the id is between this and it's successor.
     if (id.isInBetween(identifier, successor->getIdentifier())) {
@@ -16,7 +16,12 @@ Node* Node::findSuccessor(Identifier id) {
 
 Node* Node::closestPrecedingNode(Identifier id) {
     // Scan the finger table and return the existing Node.
-
+    for (int i = maxLen - 1; i >= 0; i--) {
+        if (fingerTable->fingers[i].node->getIdentifier().isInBetween(this->getIdentifier(), id)) {
+            return fingerTable->fingers[i].node;
+        }
+    }
+    return this;
 }
 
 Node* Node::findPredecessor(Identifier id) {

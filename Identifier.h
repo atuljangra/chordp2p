@@ -13,6 +13,8 @@
 #include <stdlib.h>
 #include <string>
 
+extern int maxLen;
+
 class Identifier {
   private:
       std::string id;
