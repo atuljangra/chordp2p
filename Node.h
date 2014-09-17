@@ -2,15 +2,29 @@
  * This is the file corresponding to each node in the chord.
  * We will create instances of this to simulate various nodes.
  */
-#include <iostream>
+#ifndef NODE_H
+#define NODE_H
 
-using namespace std;
+#include <string>
+#include <iostream>
+#include "Identifier.h"
 
 class Node {
-    public:
-
-    Node findSuccessor();
-
+  private:  
+      Identifier identifier;  
+      Node *predecessor;
+      Node *successor;
+      std::string address;
+      int port;
+  
+  public:
+    Identifier getIdentifier() {return identifier;}
+    Node * findSuccessor(Identifier id);
+    Node * findPredecessor(Identifier id);
+    Node * closestPrecedingNode(Identifier id);
+    void join(Node n);
+    void create();
 };
 
 
+#endif 
