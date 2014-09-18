@@ -2,7 +2,8 @@
 #define FINGERTABLE_H_
 
 #include "Identifier.h"
-#include "Node.h"
+#include "Node.h" 
+
 class Finger {
     public:
         Identifier *start;

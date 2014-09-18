@@ -4,8 +4,8 @@ using namespace std;
 
 FingerTable::FingerTable(int count) {
    fingers = new Finger[count];
-
    length = count;
+   
 }
 
 void FingerTable::print() {

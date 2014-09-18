@@ -29,6 +29,6 @@ long long Identifier::toValue() {
 
 //TODO Implement this.
 string Identifier::hash(string s) {
-
+    
     return s;
 }

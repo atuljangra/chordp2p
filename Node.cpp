@@ -5,6 +5,11 @@
 using namespace std;
 extern int maxLen;
 
+
+// TODO FIX the key thing.
+// TODO Add the static keys, and then use sha1 hash if you want to.
+// TODO Using this keys fill in the fingerTable's start and interval entry
+// while initialization
 #define NULL_NODE_STRING "null"
 #define NULL_PORT -1
 Node::Node() {
@@ -12,10 +17,14 @@ Node::Node() {
     predecessor = new Node(NULL_NODE_STRING);
     address = NULL_NODE_STRING;
     port = NULL_PORT;
-
+    fingerTable = new FingerTable(maxLen);
 }
 
 Node::Node(string s) {
+    successor = new Node(NULL_NODE_STRING);
+    predecessor = new Node(NULL_NODE_STRING);
+    port = NULL_PORT;
+    fingerTable = new FingerTable(maxLen);
     address = s;
 }
 
