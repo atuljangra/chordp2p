@@ -19,14 +19,16 @@ class Node {
       FingerTable *fingerTable;
 
   public:
-    Node() {
-    }
-    Identifier getIdentifier() {return identifier;}
+    Node() { }
+    Identifier getIdentifier();
     Node * findSuccessor(Identifier id);
     Node * findPredecessor(Identifier id);
     Node * closestPrecedingNode(Identifier id);
     void join(Node n);
     void create();
+    
+    Node * getSuccessor() {return successor;}
+    Node * getPredecessor() {return predecessor;}
 };
 
 // This is important here.

@@ -17,18 +17,17 @@ extern int maxLen;
 
 class Identifier {
   private:
+      // Hashed key
       std::string id;
+      long long toValue();
   public:
+      Identifier() { };
       std::string getID() {return id;}
-      Identifier() {
-             
-      };
+      Identifier(std::string id) {this->id = id; }
       ~Identifier() {};
-      // Get identifier for an object,
-      // This should just call the method in the respective %sclass.
-      // Implement this using abstract class.
-      static Identifier getIdentifier(void *object);
+      static Identifier * toIdentifier(std::string s);
       bool isInBetween(Identifier a, Identifier b);
+      static std::string hash(std::string);
 };
 
 #endif

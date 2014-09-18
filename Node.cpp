@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "Node.h"
 #include "utils.h"
 using namespace std;
@@ -25,7 +27,12 @@ Node* Node::closestPrecedingNode(Identifier id) {
 }
 
 Node* Node::findPredecessor(Identifier id) {
+    Node *n = this;
+    while (!id.isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier())) {
+        n = n->closestPrecedingNode(id);
+    }
 
+    return n;
 }
 
 void Node::join(Node n) {
@@ -38,4 +45,15 @@ void Node::join(Node n) {
 void Node::create() {
     predecessor = NULL;
     successor = NULL;
+}
+
+Identifier Node::getIdentifier() {
+
+    // TODO STORE This identifier.
+    char *str = new char[address.length() + 1];
+    strcpy(str, address.c_str());
+    strcat(str, ":");
+    strcat(str, to_string(port).c_str());
+    Identifier * iden = Identifier::toIdentifier(Identifier::hash(str));
+    return *iden;    
 }
