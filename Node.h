@@ -15,13 +15,15 @@ class Node {
       Identifier identifier;  
       Node *predecessor;
       Node *successor;
-      std::string address;
-      int port;
       FingerTable *fingerTable;
 
   public:
+    static int address;
+    // This constructure is meant to be used.
     Node();
-    Node(std::string address);
+
+    // This is used to simulate non-existing nodes.
+    Node(int fraudID);
     Identifier getIdentifier();
     Node * findSuccessor(Identifier id);
     Node * findPredecessor(Identifier id);

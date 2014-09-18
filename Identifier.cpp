@@ -1,7 +1,7 @@
 #include "Identifier.h"
 #include <math.h>
 #include <assert.h>
-
+#include <openssl/sha.h>
 using namespace std;
 
 // Closed interval at larger one.
@@ -29,6 +29,8 @@ long long Identifier::toValue() {
 
 //TODO Implement this.
 string Identifier::hash(string s) {
+    unsigned char hash[maxLen];
     
-    return s;
+    SHA1((const unsigned char *)s.c_str(), s.length() - 1, hash);
+    return string((const char *)hash);
 }

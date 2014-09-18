@@ -1,7 +1,7 @@
 
 CC=g++
 CFLAGS=-c -Wall -std=c++11
-LDFLAGS=
+LDFLAGS=-lssl -lcrypto
 SOURCES= $(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 	EXECUTABLE=chord
@@ -9,7 +9,7 @@ OBJECTS=$(SOURCES:.cpp=.o)
 all: $(SOURCES) $(EXECUTABLE)
 		
 $(EXECUTABLE): $(OBJECTS) 
-		$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+		$(CC) $(OBJECTS) -o $@ $(LDFLAGS)
 
 .cpp.o:
 		$(CC) $(CFLAGS) $< -o $@

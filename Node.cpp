@@ -10,22 +10,25 @@ extern int maxLen;
 // TODO Add the static keys, and then use sha1 hash if you want to.
 // TODO Using this keys fill in the fingerTable's start and interval entry
 // while initialization
-#define NULL_NODE_STRING "null"
-#define NULL_PORT -1
+#define NULL_NODE_STRING -1
+
+int Node::address = 0;
+
+
 Node::Node() {
+    // Create non-existing successor and predecessor.
     successor = new Node(NULL_NODE_STRING);
     predecessor = new Node(NULL_NODE_STRING);
-    address = NULL_NODE_STRING;
-    port = NULL_PORT;
+
+    address++;
+    // Create finger table.
     fingerTable = new FingerTable(maxLen);
+
+    // Fill in the fingers with the 
 }
 
-Node::Node(string s) {
-    successor = new Node(NULL_NODE_STRING);
-    predecessor = new Node(NULL_NODE_STRING);
-    port = NULL_PORT;
-    fingerTable = new FingerTable(maxLen);
-    address = s;
+Node::Node(int fraudID) {
+    address = fraudID;
 }
 
 Node* Node::findSuccessor(Identifier id) {
@@ -74,10 +77,7 @@ void Node::create() {
 Identifier Node::getIdentifier() {
 
     // TODO STORE This identifier.
-    char *str = new char[address.length() + 1];
-    strcpy(str, address.c_str());
-    strcat(str, ":");
-    strcat(str, to_string(port).c_str());
+    string str = to_string(address);
     Identifier * iden = Identifier::toIdentifier(Identifier::hash(str));
     return *iden;    
 }
@@ -96,7 +96,7 @@ void Node::stabilize() {
 
 void Node::notify(Node *a, Node *b) {
     // Notify successor about the change in it's predecessor.
-    if (b->predecessor->address.compare(NULL_NODE_STRING) || 
+    if ((b->predecessor->address == NULL_NODE_STRING) || 
             a->getIdentifier().isInBetween(b->predecessor->getIdentifier(), b->getIdentifier())) {
         b->predecessor = a;
     }
