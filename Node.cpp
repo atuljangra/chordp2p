@@ -4,6 +4,21 @@
 #include "utils.h"
 using namespace std;
 extern int maxLen;
+
+#define NULL_NODE_STRING "null"
+#define NULL_PORT -1
+Node::Node() {
+    successor = new Node(NULL_NODE_STRING);
+    predecessor = new Node(NULL_NODE_STRING);
+    address = NULL_NODE_STRING;
+    port = NULL_PORT;
+
+}
+
+Node::Node(string s) {
+    address = s;
+}
+
 Node* Node::findSuccessor(Identifier id) {
     // If the id is between this and it's successor.
     if (id.isInBetween(identifier, successor->getIdentifier())) {
@@ -57,3 +72,30 @@ Identifier Node::getIdentifier() {
     Identifier * iden = Identifier::toIdentifier(Identifier::hash(str));
     return *iden;    
 }
+
+/*
+ * Stabilization Threads
+ */
+void Node::stabilize() {
+    Node *x = successor->predecessor;
+    if (x->getIdentifier().isInBetween(this->getIdentifier(), successor->getIdentifier())) {
+        successor = x;
+    }
+    notify(successor, x);
+}
+
+
+void Node::notify(Node *a, Node *b) {
+    // Notify successor about the change in it's predecessor.
+    if (b->predecessor->address.compare(NULL_NODE_STRING) || 
+            a->getIdentifier().isInBetween(b->predecessor->getIdentifier(), b->getIdentifier())) {
+        b->predecessor = a;
+    }
+
+}
+
+void Node::fixFingers(int &index) {
+    Finger f = fingerTable->fingers[index];
+    f.node = findSuccessor(*f.start);
+}
+

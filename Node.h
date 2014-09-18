@@ -8,6 +8,7 @@
 #include <string>
 #include <iostream>
 #include "Identifier.h"
+
 class FingerTable; 
 class Node {
   private:  
@@ -19,7 +20,8 @@ class Node {
       FingerTable *fingerTable;
 
   public:
-    Node() { }
+    Node();
+    Node(std::string address);
     Identifier getIdentifier();
     Node * findSuccessor(Identifier id);
     Node * findPredecessor(Identifier id);
@@ -29,6 +31,16 @@ class Node {
     
     Node * getSuccessor() {return successor;}
     Node * getPredecessor() {return predecessor;}
+    
+    void stabilize();
+    // index that we want to fix.
+    void fixFingers(int &index);
+
+    /*
+     * Function for notifyinh nodes.
+     * Node a notifies Node b about itself.
+     */ 
+    static void notify(Node *a, Node *b);
 };
 
 // This is important here.

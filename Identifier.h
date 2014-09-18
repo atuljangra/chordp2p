@@ -19,8 +19,8 @@ class Identifier {
   private:
       // Hashed key
       std::string id;
-      long long toValue();
   public:
+      long long toValue();
       Identifier() { };
       std::string getID() {return id;}
       Identifier(std::string id) {this->id = id; }
