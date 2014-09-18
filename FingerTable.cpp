@@ -10,8 +10,8 @@ FingerTable::FingerTable(int count) {
 
 void FingerTable::print() {
     for (int i = 0; length; i++) {
-        cout << i << ":Start:" << fingers[i].start->getID() << " Interval:" 
-            <<fingers[i].interval->getID() << endl;
+        cout << i << ":Start:" << fingers[i].start->getID() << " end:" 
+            <<fingers[i].end->getID() << endl;
     }
 
 }

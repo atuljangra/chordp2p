@@ -9,6 +9,8 @@
 #include <iostream>
 #include "Identifier.h"
 
+#define NODE_STATE_RUNNING 1 
+#define NODE_STATE_DEAD 2
 class FingerTable; 
 class Node {
   private:  
@@ -16,15 +18,15 @@ class Node {
       Node *predecessor;
       Node *successor;
       FingerTable *fingerTable;
-
+      Identifier toIdentifier();
+      int state;
   public:
     static int address;
     // This constructure is meant to be used.
     Node();
 
-    // This is used to simulate non-existing nodes.
-    Node(int fraudID);
-    Identifier getIdentifier();
+    void start();
+    Identifier getIdentifier() {return identifier;}
     Node * findSuccessor(Identifier id);
     Node * findPredecessor(Identifier id);
     Node * closestPrecedingNode(Identifier id);

@@ -1,5 +1,5 @@
 #include <cstring>
-
+#include <cmath>
 #include "Node.h"
 #include "utils.h"
 using namespace std;
@@ -10,27 +10,46 @@ extern int maxLen;
 // TODO Add the static keys, and then use sha1 hash if you want to.
 // TODO Using this keys fill in the fingerTable's start and interval entry
 // while initialization
-#define NULL_NODE_STRING -1
-
 int Node::address = 0;
-
 
 Node::Node() {
     // Create non-existing successor and predecessor.
-    successor = new Node(NULL_NODE_STRING);
-    predecessor = new Node(NULL_NODE_STRING);
-
+    successor = new Node();
+    predecessor = new Node();
+    successor -> state = NODE_STATE_DEAD;
+    predecessor -> state = NODE_STATE_DEAD;
+    this -> state = NODE_STATE_DEAD;
     address++;
     // Create finger table.
     fingerTable = new FingerTable(maxLen);
-
-    // Fill in the fingers with the 
+    cout << "Node " << address << " created." << endl;
 }
 
-Node::Node(int fraudID) {
-    address = fraudID;
-}
+void Node::start() {
+    cout << "Node " << address << " starting." << endl;
+    // Add identifier.
+    this->identifier = toIdentifier();    
 
+    // Initialize fingers.
+    long maxValue = pow(2.0, maxLen);
+    long myVal = identifier.toValue();
+    for (int i = 0; i < maxLen; i++) {
+        long start = (long)(myVal + pow(2, i)) % maxValue;
+        Finger f = fingerTable->fingers[i];
+        long end = (long)(myVal + pow(2, i + 1)) % maxValue;
+        f.start = Identifier::toIdentifier(to_string(start));
+        f.end = Identifier::toIdentifier(to_string(end));
+        f.node = this;
+    }
+    // Start the stabilizing thread.
+
+    // Start the fingerfixing thread.
+
+    // Start the predecessorCheck thread.
+    
+    this -> state = NODE_STATE_RUNNING;
+}
+    
 Node* Node::findSuccessor(Identifier id) {
     // If the id is between this and it's successor.
     if (id.isInBetween(identifier, successor->getIdentifier())) {
@@ -74,9 +93,7 @@ void Node::create() {
     successor = NULL;
 }
 
-Identifier Node::getIdentifier() {
-
-    // TODO STORE This identifier.
+Identifier Node::toIdentifier() {
     string str = to_string(address);
     Identifier * iden = Identifier::toIdentifier(Identifier::hash(str));
     return *iden;    
@@ -96,13 +113,16 @@ void Node::stabilize() {
 
 void Node::notify(Node *a, Node *b) {
     // Notify successor about the change in it's predecessor.
-    if ((b->predecessor->address == NULL_NODE_STRING) || 
+    if ((b->predecessor->state == NODE_STATE_DEAD) || 
             a->getIdentifier().isInBetween(b->predecessor->getIdentifier(), b->getIdentifier())) {
         b->predecessor = a;
     }
 
 }
 
+/*
+ * Finger fixing thread
+ */
 void Node::fixFingers(int &index) {
     Finger f = fingerTable->fingers[index];
     f.node = findSuccessor(*f.start);

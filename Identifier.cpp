@@ -27,7 +27,6 @@ long long Identifier::toValue() {
     return val;
 }
 
-//TODO Implement this.
 string Identifier::hash(string s) {
     unsigned char hash[maxLen];
     

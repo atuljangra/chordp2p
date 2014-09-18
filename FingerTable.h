@@ -7,11 +7,11 @@
 class Finger {
     public:
         Identifier *start;
-        Identifier *interval;
+        Identifier *end;
         Node *node;
         Finger() {
             start = new Identifier();
-            interval = new Identifier();
+            end = new Identifier();
             node =  new Node();
         }
 
