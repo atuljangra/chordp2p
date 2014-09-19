@@ -14,7 +14,7 @@ bool Identifier::isInBetween(Identifier *a, Identifier *b) {
     long larger = (valA >= valB) ? valA : valB;
     long smaller = (valA < valB) ? valA : valB;
 
-    if (valA = valB)
+    if (valA == valB)
         return true;
     long val = this->toValue();
     return (val > smaller) && (val <= larger); 

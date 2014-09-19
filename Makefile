@@ -1,7 +1,7 @@
 
 CC=g++ -g
 CFLAGS=-c -Wall -std=c++11
-LDFLAGS=-lssl -lcrypto
+LDFLAGS=-lssl -lcrypto -pthread
 SOURCES= $(wildcard *.cpp)
 OBJECTS=$(SOURCES:.cpp=.o)
 	EXECUTABLE=chord

@@ -50,14 +50,14 @@ void Node::start() {
     }
 
     // Start the stabilizing thread.
-    // _stabilize = thread(&Node::stabilizeThread, this);
+    _stabilize = thread(&Node::stabilizeThread, this);
     
     // Start the fingerfixing thread.
-    // _fixFinger = thread(&Node::fixFingersThread, this);
+    _fixFinger = thread(&Node::fixFingersThread, this);
     // Start the predecessorCheck thread.
     
     this -> state = NODE_STATE_RUNNING;
-    cout << "Node " << address << " is node " << identifier -> getID() << endl; 
+    // cout << "Node " << address << " is node " << identifier -> getID() << endl; 
 }
 
 Node::~Node() {
@@ -120,11 +120,15 @@ Identifier *Node::toIdentifier() {
  */
 void Node::stabilize() {
     Node *x = successor->predecessor;
-    if (x->getIdentifier()->isInBetween(this->getIdentifier(), successor->getIdentifier())) {
+    cout << "stabilizing " << identifier -> getID() << endl;
+    if (x != NULL && x->getIdentifier()->isInBetween(this->getIdentifier(), successor->getIdentifier())) {
         successor = x;
         cout << "Node " << identifier->getID() << " changed successor to "
             << x->getIdentifier()->getID() << endl;
     }
+    if (x == NULL) 
+        // Don't bother notifying the other node.
+        return;
     notify(successor, x);
 }
 
@@ -137,9 +141,19 @@ void Node::stabilizeThread() {
 
 void Node::notify(Node *a, Node *b) {
     // Notify successor about the change in it's predecessor.
+    cout << "Notify " << a->getIdentifier() -> getID() << endl;
+    if (b -> predecessor == NULL) {
+        b->predecessor = a;
+        cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
+            a -> getIdentifier() -> getID() << endl;
+        return;
+    }
+
     if ((b->predecessor->state == NODE_STATE_DEAD) || 
             a->getIdentifier()->isInBetween(b->predecessor->getIdentifier(), b->getIdentifier())) {
         b->predecessor = a;
+        cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
+            a -> getIdentifier() -> getID() << endl;
     }
 
 }
