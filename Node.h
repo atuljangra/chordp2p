@@ -7,6 +7,7 @@
 
 #include <string>
 #include <iostream>
+#include <thread>
 #include "Identifier.h"
 
 #define NODE_STATE_RUNNING 1 
@@ -14,31 +15,36 @@
 class FingerTable; 
 class Node {
   private:  
-      Identifier identifier;  
+      Identifier *identifier;  
       Node *predecessor;
       Node *successor;
       FingerTable *fingerTable;
-      Identifier toIdentifier();
+      std::thread _stabilize;
+      std::thread _fixFinger;
+      Identifier *toIdentifier();
       int state;
+      void stabilize();
+      void fixFingers(int index);
+
   public:
     static int address;
     // This constructure is meant to be used.
     Node();
-
+    ~Node();
     void start();
-    Identifier getIdentifier() {return identifier;}
-    Node * findSuccessor(Identifier id);
-    Node * findPredecessor(Identifier id);
-    Node * closestPrecedingNode(Identifier id);
-    void join(Node n);
+    Identifier *getIdentifier() {return identifier;}
+    Node * findSuccessor(Identifier *id);
+    Node * findPredecessor(Identifier *id);
+    Node * closestPrecedingNode(Identifier *id);
+    void join(Node *n);
     void create();
     
     Node * getSuccessor() {return successor;}
     Node * getPredecessor() {return predecessor;}
     
-    void stabilize();
+    void stabilizeThread();
     // index that we want to fix.
-    void fixFingers(int &index);
+    void fixFingersThread();
 
     /*
      * Function for notifyinh nodes.

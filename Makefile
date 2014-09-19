@@ -1,5 +1,5 @@
 
-CC=g++
+CC=g++ -g
 CFLAGS=-c -Wall -std=c++11
 LDFLAGS=-lssl -lcrypto
 SOURCES= $(wildcard *.cpp)

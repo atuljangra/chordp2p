@@ -10,9 +10,6 @@ class Finger {
         Identifier *end;
         Node *node;
         Finger() {
-            start = new Identifier();
-            end = new Identifier();
-            node =  new Node();
         }
 
         ~Finger() {

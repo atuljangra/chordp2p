@@ -20,13 +20,13 @@ class Identifier {
       // Hashed key
       std::string id;
   public:
-      long long toValue();
-      Identifier() { };
+      long toValue();
+      Identifier() {};
       std::string getID() {return id;}
       Identifier(std::string id) {this->id = id; }
       ~Identifier() {};
       static Identifier * toIdentifier(std::string s);
-      bool isInBetween(Identifier a, Identifier b);
+      bool isInBetween(Identifier *a, Identifier *b);
       static std::string hash(std::string);
 };
 
