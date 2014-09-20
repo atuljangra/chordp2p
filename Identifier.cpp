@@ -12,14 +12,20 @@ bool Identifier::isInBetween(Identifier *a, Identifier *b, int leftClosed, int r
     long valB = b->toValue();
     long maxVal = pow(2.0, maxLen);
     long myVal = this->toValue();
-    
+     
     myVal = (myVal <= valA)? (myVal + maxVal) : myVal;
     valB = (valB <= valA)? (valB + maxVal) : valB;
-    if ((leftClosed && valA <= myVal) || (!leftClosed && valA < myVal)
-            || (rightClosed && valB >= myVal) || (!rightClosed && valB > myVal) )
+    if (((leftClosed && valA <= myVal) || (!leftClosed && valA < myVal))
+            && ((rightClosed && valB >= myVal) || (!rightClosed && valB > myVal)) )
         return true;
-        
-    return false;
+    
+    /*if (valA > valB)
+        valB += maxVal;
+
+    if (((leftClosed && valA <= myVal) || (!leftClosed && valA < myVal))
+            && ((rightClosed && valB >= myVal) || (!rightClosed && valB > myVal)) )
+        return true;
+    */return false;
 }
 
 Identifier * Identifier::toIdentifier(string s) {
