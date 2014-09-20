@@ -28,14 +28,16 @@ class Node {
 
   public:
     static int address;
-    // This constructure is meant to be used.
     Node();
     ~Node();
+
+    // This function should be called before doing any other operation. 
     void start();
     Identifier *getIdentifier() {return identifier;}
     Node * findSuccessor(Identifier *id);
     Node * findPredecessor(Identifier *id);
     Node * closestPrecedingNode(Identifier *id);
+    void concurrentJoin(Node *n);
     void join(Node *n);
     void create();
     
@@ -45,12 +47,25 @@ class Node {
     void stabilizeThread();
     // index that we want to fix.
     void fixFingersThread();
-
+    
+    void initFingerTable(Node *n);
+    
+    /*
+     * Update all nodes whose finger tables should refer to this node.
+     */
+    void updateOthers();
+    
+    /*
+     * If Node s is the ith finger of this Node, then update this node's finger
+     * table with Node s.
+     */
+    void updateFingerTable(Node *s, int i);
     /*
      * Function for notifyinh nodes.
      * Node a notifies Node b about itself.
      */ 
     static void notify(Node *a, Node *b);
+    void printFingers();
 };
 
 // This is important here.

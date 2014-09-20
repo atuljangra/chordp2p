@@ -6,18 +6,20 @@
 
 using namespace std;
 
-// Closed interval at larger one.
-bool Identifier::isInBetween(Identifier *a, Identifier *b) {
+
+bool Identifier::isInBetween(Identifier *a, Identifier *b, int leftClosed, int rightClosed) {
     long valA = a->toValue();
     long valB = b->toValue();
-
-    long larger = (valA >= valB) ? valA : valB;
-    long smaller = (valA < valB) ? valA : valB;
-
-    if (valA == valB)
+    long maxVal = pow(2.0, maxLen);
+    long myVal = this->toValue();
+    
+    myVal = (myVal <= valA)? (myVal + maxVal) : myVal;
+    valB = (valB <= valA)? (valB + maxVal) : valB;
+    if ((leftClosed && valA <= myVal) || (!leftClosed && valA < myVal)
+            || (rightClosed && valB >= myVal) || (!rightClosed && valB > myVal) )
         return true;
-    long val = this->toValue();
-    return (val > smaller) && (val <= larger); 
+        
+    return false;
 }
 
 Identifier * Identifier::toIdentifier(string s) {

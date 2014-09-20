@@ -26,7 +26,11 @@ class Identifier {
       Identifier(std::string id) {this->id = id; }
       ~Identifier() {};
       static Identifier * toIdentifier(std::string s);
-      bool isInBetween(Identifier *a, Identifier *b);
+      /*
+       * return true if this is in between a and b, with a being the lower
+       * bound and b being the upper.
+       */
+      bool isInBetween(Identifier *a, Identifier *b, int leftClosed, int rightClosed);
       static std::string hash(std::string);
 };
 

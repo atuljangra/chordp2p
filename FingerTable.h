@@ -1,6 +1,7 @@
 #ifndef FINGERTABLE_H_
 #define FINGERTABLE_H_
 
+#include <string>
 #include "Identifier.h"
 #include "Node.h" 
 
@@ -21,9 +22,11 @@ class Finger {
 class FingerTable {
     public:
        int length;
+       std::string name;
        Finger *fingers;
        FingerTable(int count);
        void print();
+
        
 };
 
