@@ -17,11 +17,11 @@ extern int maxLen;
 
 int Node::address = -1;
 
-Node::Node() {
+Node::Node(int ad) {
     // Create non-existing successor and predecessor.
     cout << "Address is " << address << endl;
     this -> state = NODE_STATE_DEAD;
-    address++;
+    address = ad;;
     cout << "Node " << address << " created." << endl;
 }
 
@@ -71,10 +71,11 @@ Node* Node::findSuccessor(Identifier *id) {
     // If the id is between this and it's successor
     cout << "checking " << id->getID() << " between " 
         << identifier->getID() << " and " << successor->getIdentifier()->getID() << endl;
-  /*  if (id->isInBetween(identifier, successor->getIdentifier(), 0, 1)) {
+    if (id->isInBetween(identifier, successor->getIdentifier(), 0, 1)) {
         cout << "Is in between" << endl;
-        return successor;
+  //      return successor;
     }
+    /*
     // Find closest preceding node and then forward the query to that.
     else {
         Node *n = closestPrecedingNode(id);
@@ -90,8 +91,10 @@ Node* Node::findSuccessor(Identifier *id) {
 
 Node* Node::closestPrecedingNode(Identifier *id) {
     // Scan the finger table and return the existing Node.
-    cout << NAME << " finding closet preceding node " << id -> getID() << endl;
+    cout << NAME << " finding closet preceding node to " << id -> getID() << endl;
     for (int i = maxLen - 1; i >= 0; i--) {
+        cout << "Finding if " << fingerTable->fingers[i].node->NAME << " is in between " << NAME << " and " <<
+            id -> toValue() << endl;
         if (fingerTable->fingers[i].node->getIdentifier()->isInBetween(
                     this->getIdentifier(), id, 0, 0)) {
             cout << "Closest pred node is " << fingerTable->fingers[i].node->NAME << endl;
@@ -104,7 +107,7 @@ Node* Node::closestPrecedingNode(Identifier *id) {
 
 Node* Node::findPredecessor(Identifier *id) {
     Node *n = this;
-    while (!id->isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier(),0, 1)) {
+    while (!id->isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier(),0, 0)) {
         cout << id -> toValue() << " is not in between " << n -> NAME << " and " <<
             n -> getSuccessor()-> NAME << endl;
         Node *k = n->closestPrecedingNode(id);
@@ -113,6 +116,8 @@ Node* Node::findPredecessor(Identifier *id) {
         else 
             n = k;
     }
+        cout << id -> toValue() << " is in between " << n -> NAME << " and " <<
+            n -> getSuccessor()-> NAME << endl;
     cout << "pred for " << id->toValue() << " is " << n->NAME << endl;
     return n;
 }
@@ -157,6 +162,7 @@ void Node::initFingerTable(Node *n) {
     // This is obvious.
     successor = fingerTable->fingers[0].node;
     predecessor = successor->predecessor;
+    cout << "Setting suc: " << successor->NAME << " pred: " << predecessor->NAME << endl;
     successor->predecessor = this;
     // Verify the above using gdb;
     for (int i = 0; i < maxLen - 1; i++) {
@@ -196,9 +202,15 @@ void Node::updateOthers() {
 
 void Node::updateFingerTable(Node *s, int i) {
     cout << NAME << " updating finger " << i << " with " << s-> NAME <<  endl;
+    cout << "finding if " << s->NAME << " is in b/w " << NAME <<  " " << fingerTable->fingers[i].node->NAME << endl;
     if (s->getIdentifier()->isInBetween(identifier, 
                 fingerTable->fingers[i].node->getIdentifier(), 1, 0)) {
-        
+        cout << "Updating finger " << NAME << endl;  
+        // if we are updating the first finger, then we should also update the successor.
+        if (i==0) {
+            successor = s;
+        }
+
         fingerTable->fingers[i].node = s;
         Node *pred = predecessor;
         pred -> updateFingerTable(s, i);

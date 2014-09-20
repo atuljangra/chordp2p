@@ -28,7 +28,7 @@ class Node {
 
   public:
     static int address;
-    Node();
+    Node(int address);
     ~Node();
 
     // This function should be called before doing any other operation. 
