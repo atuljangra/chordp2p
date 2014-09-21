@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <iostream>
 #include "Node.h"
+#include "Driver.h"
 
 using namespace std;
-int maxLen = 4;
+int maxLen = 0;
 int main(void) {
+/*
     Node *a = new Node(0);
     Node *b = new Node(3);
     Node *c = new Node(7);
@@ -34,6 +36,9 @@ int main(void) {
 
     a -> addValueForKey("4", "Atul");
     c -> getValueForKey("4");
+*/
+    Driver *d = new Driver();
+    d -> timeAdditions(650); 
     return 0;
 }
 

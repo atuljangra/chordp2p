@@ -76,6 +76,7 @@ class Node {
     void addValueForKey(std::string key, std::string value);
     std::string getValueForKey(std::string key);
     void removeValueForKey(std::string key);
+    void printKeysAndFingers();
 };
 
 // This is important here.

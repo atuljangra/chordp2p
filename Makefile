@@ -19,3 +19,6 @@ run:
 
 clean:
 	rm -f $(EXECUTABLE) $(OBJECTS)
+
+gdb:
+	gdb $(EXECUTABLE) 

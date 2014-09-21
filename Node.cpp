@@ -24,9 +24,6 @@ Node::Node(int ad) {
 }
 
 void Node::start() {
-    cout << "Node " << address << " starting." << endl;
-   
-    
     successor = this;
 
     // Add identifier.
@@ -56,7 +53,6 @@ void Node::start() {
     }
 
     this -> state = NODE_STATE_RUNNING;
-    // cout << "Node " << address << " is node " << identifier -> getID() << endl; 
 }
 
 Node::~Node() {
@@ -66,18 +62,15 @@ Node::~Node() {
 }
 
 Node* Node::findSuccessor(Identifier *id) {
-    // If the id is between this and it's successor
-    cout << "checking " << id->getID() << " between " 
-        << identifier->getID() << " and " << successor->getIdentifier()->getID() << endl;
     Node *n = findPredecessor(id);
     Node *k = n -> getSuccessor();
-    cout << "Successor for " << id->toValue() << " is " << k->NAME << endl;
+    // cout << "Successor for " << id->toValue() << " is " << k->NAME << endl;
     return k;
 }
 
 Node* Node::closestPrecedingNode(Identifier *id) {
     // Scan the finger table and return the existing Node.
-    cout << NAME << " finding closet preceding node to " << id -> getID() << endl;
+    // cout << NAME << " finding closet preceding node to " << id -> getID() << endl;
     for (int i = maxLen - 1; i >= 0; i--) {
         cout << "Finding if " << fingerTable->fingers[i].node->NAME << " is in between " << NAME << " and " <<
             id -> toValue() << endl;
@@ -305,4 +298,12 @@ void Node::removeValueForKey(string key) {
     keyMap.erase(key);
     cout << "Erased " << val << " for " << key << " at " << NAME << endl;
 
+}
+
+void Node::printKeysAndFingers() {
+    cout << "-------Keys---------" << endl;
+    for (auto iter : keyMap) {
+        cout << iter.first << endl;
+    }
+    printFingers(); 
 }
