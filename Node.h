@@ -28,7 +28,7 @@ class Node {
       void stabilize();
       void fixFingers(int index);
       int address;
-
+      static long messageCount;
   public:
     Node(int address);
     ~Node();
@@ -77,6 +77,10 @@ class Node {
     std::string getValueForKey(std::string key);
     void removeValueForKey(std::string key);
     void printKeysAndFingers();
+
+    static void resetMessageCount();
+    static long getMessageCount();
+     
 };
 
 // This is important here.

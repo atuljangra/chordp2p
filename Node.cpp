@@ -15,7 +15,7 @@ unsigned int stabilizeSleepTime = 400; //microseconds
 unsigned int fixFingerSleepTime = 1000; //microseconds
 extern int maxLen;
 
-
+long Node::messageCount = 0;
 Node::Node(int ad) {
     // Create non-existing successor and predecessor.
     this -> state = NODE_STATE_DEAD;
@@ -62,8 +62,17 @@ Node::~Node() {
 }
 
 Node* Node::findSuccessor(Identifier *id) {
+    // I am my own successor
+    if (id->getID().compare(NAME) == 0) 
+        return this;
     Node *n = findPredecessor(id);
+    if (n != this) {
+        messageCount++;
+    }
     Node *k = n -> getSuccessor();
+    if (n != this) {
+        messageCount++;
+    }
     // cout << "Successor for " << id->toValue() << " is " << k->NAME << endl;
     return k;
 }
@@ -92,8 +101,10 @@ Node* Node::findPredecessor(Identifier *id) {
         Node *k = n->closestPrecedingNode(id);
         if (k == n)
             break;
-        else 
+        else { 
             n = k;
+            messageCount++;
+        }
     }
         cout << id -> toValue() << " is in between " << n -> NAME << " and " <<
             n -> getSuccessor()-> NAME << endl;
@@ -141,6 +152,10 @@ void Node::initFingerTable(Node *n) {
     // This is obvious.
     successor = fingerTable->fingers[0].node;
     predecessor = successor->predecessor;
+    if (successor != this) {
+        messageCount++;
+    }
+
     cout << "Setting suc: " << successor->NAME << " pred: " << predecessor->NAME << endl;
     successor->predecessor = this;
     // Verify the above using gdb;
@@ -155,6 +170,7 @@ void Node::initFingerTable(Node *n) {
         else {
             fingerTable->fingers[i+1].node = 
                 n->findSuccessor(fingerTable->fingers[i+1].start);
+            messageCount++;
             cout << "ELSE setting " << i + 1 << " to " << fingerTable->fingers[i].node->NAME << endl;
         }
     }
@@ -173,8 +189,11 @@ void Node::updateOthers() {
         Node *pred = findPredecessor(iden);
         cout << "pred is " << pred->NAME << endl;
         // TODO remove this check.
-       // if (pred != this)
-            pred -> updateFingerTable(this, i);
+        // if (pred != this)
+        if (pred != this) 
+            messageCount++;
+        pred -> updateFingerTable(this, i);
+        
     }
 
 }
@@ -192,6 +211,8 @@ void Node::updateFingerTable(Node *s, int i) {
 
         fingerTable->fingers[i].node = s;
         Node *pred = predecessor;
+        if (pred != this)
+            messageCount++;
         pred -> updateFingerTable(s, i);
     }
 
@@ -215,6 +236,7 @@ Identifier *Node::toIdentifier() {
  */
 void Node::stabilize() {
     Node *x = successor->predecessor;
+    messageCount++;
     cout << "stabilizing " << identifier -> getID() << endl;
     if (x != NULL && x->getIdentifier()->isInBetween(
                 this->getIdentifier(), successor->getIdentifier(), 0, 1)) {
@@ -277,10 +299,12 @@ void Node::fixFingersThread() {
  * Hash table operations.
  */
 void Node::addValueForKey(string key, string value) {
+    cout << "Trying to add " << key << " at " << NAME << endl; 
     Identifier *id = Identifier::toIdentifier(key);
     Node *x = findSuccessor(id);
     x -> keyMap[key] = value;
     cout << "Added " << key << ":" << value << " at " << x -> NAME << endl;
+    cout << "--------------added---------" << messageCount << "-----------" << endl;
 }
 
 string Node::getValueForKey(string key) {
@@ -305,5 +329,14 @@ void Node::printKeysAndFingers() {
     for (auto iter : keyMap) {
         cout << iter.first << endl;
     }
+    cout << "Succ: " << successor -> NAME << endl;
     printFingers(); 
+}
+
+void Node::resetMessageCount() {
+    messageCount = 0;
+}
+
+long Node::getMessageCount() {
+    return messageCount;
 }

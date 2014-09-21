@@ -38,7 +38,7 @@ int main(void) {
     c -> getValueForKey("4");
 */
     Driver *d = new Driver();
-    d -> timeAdditions(650); 
+    d -> timeAdditions(5); 
     return 0;
 }
 

@@ -47,13 +47,15 @@ double Driver::timeAdditions(int number, int maxN) {
         cout << "-------------------------------------"<< endl;
     }
 
-    
+   
+    Node::resetMessageCount();
     // Start clock.
     clock_t start = clock(); 
     for (int i = 0; i < maxNodes - 1; i++) {
         nodes[getUniqueKey(true)]->addValueForKey(to_string(i), to_string(i + maxNodes));
     }
     clock_t end = clock();
+    long count = Node::getMessageCount();
     for (int i = 0; i < maxNodes; i++) {
         if (map[i] == true) {
             nodes[i]->printKeysAndFingers();
@@ -63,6 +65,7 @@ double Driver::timeAdditions(int number, int maxN) {
     clock_t timeTaken = (end - start) / (double)(CLOCKS_PER_SEC / 1000);
     cout << "Time taken for " << maxNodes << " msgs on " << number << 
         " Nodes is " << timeTaken << "ms!" << endl;
+    cout << "Messages passed " << count << endl;
     map.erase(map.begin(), map.end());
     return timeTaken;
 }
