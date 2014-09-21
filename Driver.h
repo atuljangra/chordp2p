@@ -14,6 +14,7 @@ class Driver {
         long long timeAdditions(int n, int maxN);
         long long timeDeletions(int n);
         long long timeLookup(int n);
-
+        long long timeEfficacy(int n);
+        long long nodeAdditions(int n);
 
 };

@@ -29,11 +29,12 @@ class Node {
       void fixFingers(int index);
       int address;
       static long messageCount;
-      
+      static long efficacy; 
   public:
     Node(int address);
     ~Node();
-    
+    static long getEfficacy();
+    static void resetEfficacy();
     // This function should be called before doing any other operation. 
     void start();
     Identifier *getIdentifier() {return identifier;}

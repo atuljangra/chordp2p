@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 #include "Node.h"
 #include "Driver.h"
 
-#define FILENAME "insertTime.txt"
+#define FILENAME "efficacy2000.txt"
 using namespace std;
 int maxLen = 0;
 int main(void) {
@@ -50,10 +51,17 @@ int main(void) {
     }
     myFile << endl;
     for (int i = 1; i < 2000; i+=10) {
-        double time = d -> timeAdditions(i);
+        long time = d -> timeEfficacy(i);
         myFile << time << " ";
-
     }
+    myFile << endl;
+   
+    for (int i = 1; i < 2000; i+=10) {
+        int max = (int)ceil(log2(i));
+        int xx = i * max;
+        myFile << xx << " ";
+    }
+            
     myFile << endl;
     myFile.close();
     return 0;

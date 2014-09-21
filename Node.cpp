@@ -16,6 +16,10 @@ unsigned int fixFingerSleepTime = 1000; //microseconds
 extern int maxLen;
 
 long Node::messageCount = 0;
+long Node::efficacy = 0;
+void Node::resetEfficacy() { efficacy = 0;
+}
+long Node::getEfficacy() {return efficacy;}
 Node::Node(int ad) {
     // Create non-existing successor and predecessor.
     this -> state = NODE_STATE_DEAD;
@@ -86,6 +90,7 @@ Node* Node::closestPrecedingNode(Identifier *id) {
         if (fingerTable->fingers[i].node->getIdentifier()->isInBetween(
                     this->getIdentifier(), id, 0, 0)) {
   //          cout << "Closest pred node is " << fingerTable->fingers[i].node->NAME << endl;
+            efficacy++;
             return fingerTable->fingers[i].node;
         }
     }
@@ -302,6 +307,8 @@ void Node::addValueForKey(string key, string value) {
  //   cout << "Trying to add " << key << " at " << NAME << endl; 
     Identifier *id = Identifier::toIdentifier(key);
     Node *x = findSuccessor(id);
+    if (x!= this)
+        messageCount++;
     x -> keyMap[key] = value;
  //   cout << "Added " << key << ":" << value << " at " << x -> NAME << endl;
  //   cout << "--------------added---------" << messageCount << "-----------" << endl;
