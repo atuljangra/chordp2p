@@ -44,7 +44,7 @@ double Driver::timeAdditions(int number, int maxN) {
         nodes[id] = new Node(id);
         nodes[id] -> start();
         nodes[id] -> join(nodes[join]);
-        cout << "-------------------------------------"<< endl;
+//        cout << "-------------------------------------"<< endl;
     }
 
    
@@ -58,7 +58,7 @@ double Driver::timeAdditions(int number, int maxN) {
     long count = Node::getMessageCount();
     for (int i = 0; i < maxNodes; i++) {
         if (map[i] == true) {
-            nodes[i]->printKeysAndFingers();
+   //         nodes[i]->printKeysAndFingers();
         }
     }
     

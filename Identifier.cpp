@@ -31,7 +31,7 @@ bool Identifier::isInBetween(Identifier *a, Identifier *b, int leftClosed, int r
     if (rightClosed)
         valB = (valB + 1)%maxVal;
     bool ret = isInRange(myVal, valA, valB);
-    cout << myVal << " b/w " << valA << " " << valB << " " << ret  << endl;
+  //  cout << myVal << " b/w " << valA << " " << valB << " " << ret  << endl;
     return ret;
 }
 

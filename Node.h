@@ -29,6 +29,7 @@ class Node {
       void fixFingers(int index);
       int address;
       static long messageCount;
+      
   public:
     Node(int address);
     ~Node();

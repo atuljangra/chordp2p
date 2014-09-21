@@ -20,7 +20,7 @@ Node::Node(int ad) {
     // Create non-existing successor and predecessor.
     this -> state = NODE_STATE_DEAD;
     address = ad;;
-    cout << "Node " << address << " created." << endl;
+//    cout << "Node " << address << " created." << endl;
 }
 
 void Node::start() {
@@ -81,23 +81,23 @@ Node* Node::closestPrecedingNode(Identifier *id) {
     // Scan the finger table and return the existing Node.
     // cout << NAME << " finding closet preceding node to " << id -> getID() << endl;
     for (int i = maxLen - 1; i >= 0; i--) {
-        cout << "Finding if " << fingerTable->fingers[i].node->NAME << " is in between " << NAME << " and " <<
-            id -> toValue() << endl;
+    //    cout << "Finding if " << fingerTable->fingers[i].node->NAME << " is in between " << NAME << " and " <<
+      //      id -> toValue() << endl;
         if (fingerTable->fingers[i].node->getIdentifier()->isInBetween(
                     this->getIdentifier(), id, 0, 0)) {
-            cout << "Closest pred node is " << fingerTable->fingers[i].node->NAME << endl;
+  //          cout << "Closest pred node is " << fingerTable->fingers[i].node->NAME << endl;
             return fingerTable->fingers[i].node;
         }
     }
-    cout << " I am the CPF " << endl;
+   // cout << " I am the CPF " << endl;
     return this;
 }
 
 Node* Node::findPredecessor(Identifier *id) {
     Node *n = this;
     while (!id->isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier(),0, 1)) {
-        cout << id -> toValue() << " is not in between " << n -> NAME << " and " <<
-            n -> getSuccessor()-> NAME << endl;
+     //   cout << id -> toValue() << " is not in between " << n -> NAME << " and " <<
+       //     n -> getSuccessor()-> NAME << endl;
         Node *k = n->closestPrecedingNode(id);
         if (k == n)
             break;
@@ -106,17 +106,17 @@ Node* Node::findPredecessor(Identifier *id) {
             messageCount++;
         }
     }
-        cout << id -> toValue() << " is in between " << n -> NAME << " and " <<
-            n -> getSuccessor()-> NAME << endl;
-    cout << "pred for " << id->toValue() << " is " << n->NAME << endl;
+   //     cout << id -> toValue() << " is in between " << n -> NAME << " and " <<
+   //         n -> getSuccessor()-> NAME << endl;
+   // cout << "pred for " << id->toValue() << " is " << n->NAME << endl;
     return n;
 }
 
 void Node::concurrentJoin(Node *n) {
     predecessor = NULL;
     successor = n->findSuccessor(n->getIdentifier());
-    cout << "Node " << identifier->getID() << " joined before " <<
-        successor->getIdentifier()->getID() << endl;
+  //  cout << "Node " << identifier->getID() << " joined before " <<
+//        successor->getIdentifier()->getID() << endl;
     if (CONCURRENT) 
         return;
 
@@ -129,19 +129,19 @@ void Node::join(Node *n) {
 
     // Am I the only one round here?
     if (n == NULL) {
-        cout << "Starting a new ring with " << NAME << endl;
+   //     cout << "Starting a new ring with " << NAME << endl;
         for (int i = 0; i < maxLen; i++) {
             fingerTable->fingers[i].node = this;
         }
         predecessor = this;
     }
     else {
-        cout << NAME << " trying to join " << n->NAME << endl;
+     //   cout << NAME << " trying to join " << n->NAME << endl;
         initFingerTable(n);
-        cout << "Initialized finger table " << NAME << endl;
-        printFingers();
+     //   cout << "Initialized finger table " << NAME << endl;
+//        printFingers();
         updateOthers();
-        cout << NAME << " joined " << n->NAME << endl;
+     //   cout << NAME << " joined " << n->NAME << endl;
 
     }
 
@@ -156,22 +156,22 @@ void Node::initFingerTable(Node *n) {
         messageCount++;
     }
 
-    cout << "Setting suc: " << successor->NAME << " pred: " << predecessor->NAME << endl;
+  //  cout << "Setting suc: " << successor->NAME << " pred: " << predecessor->NAME << endl;
     successor->predecessor = this;
     // Verify the above using gdb;
     for (int i = 0; i < maxLen - 1; i++) {
-        cout << fingerTable->fingers[i+1].start->toValue() << " between " << identifier->toValue() << " and "
-            << fingerTable->fingers[i].node->NAME << endl;
+      //  cout << fingerTable->fingers[i+1].start->toValue() << " between " << identifier->toValue() << " and "
+        //    << fingerTable->fingers[i].node->NAME << endl;
         if (fingerTable->fingers[i+1].start->isInBetween(
                     identifier, fingerTable->fingers[i].node->getIdentifier(), 1, 0)) {
             fingerTable->fingers[i+1].node = fingerTable->fingers[i].node;
-            cout << "setting " << i + 1 << " to " << fingerTable->fingers[i].node->NAME << endl;
+    //        cout << "setting " << i + 1 << " to " << fingerTable->fingers[i].node->NAME << endl;
         }
         else {
             fingerTable->fingers[i+1].node = 
                 n->findSuccessor(fingerTable->fingers[i+1].start);
             messageCount++;
-            cout << "ELSE setting " << i + 1 << " to " << fingerTable->fingers[i].node->NAME << endl;
+          //  cout << "ELSE setting " << i + 1 << " to " << fingerTable->fingers[i].node->NAME << endl;
         }
     }
 }
@@ -185,9 +185,9 @@ void Node::updateOthers() {
         // find the last node p whose ith finger might be n.
         Identifier *iden = Identifier::toIdentifier(
                 to_string(myVal - power + 1));
-        cout << NAME << " finding pred for " << iden->toValue() << endl;
+    //    cout << NAME << " finding pred for " << iden->toValue() << endl;
         Node *pred = findPredecessor(iden);
-        cout << "pred is " << pred->NAME << endl;
+    //    cout << "pred is " << pred->NAME << endl;
         // TODO remove this check.
         // if (pred != this)
         if (pred != this) 
@@ -199,11 +199,11 @@ void Node::updateOthers() {
 }
 
 void Node::updateFingerTable(Node *s, int i) {
-    cout << NAME << " updating finger " << i << " with " << s-> NAME <<  endl;
-    cout << "finding if " << s->NAME << " is in b/w " << fingerTable->fingers[i].start->toValue() <<  " " << fingerTable->fingers[i].node->NAME << endl;
+//    cout << NAME << " updating finger " << i << " with " << s-> NAME <<  endl;
+//    cout << "finding if " << s->NAME << " is in b/w " << fingerTable->fingers[i].start->toValue() <<  " " << fingerTable->fingers[i].node->NAME << endl;
     if (s->getIdentifier()->isInBetween(fingerTable->fingers[i].start, 
                 fingerTable->fingers[i].node->getIdentifier(), 1, 0)) {
-        cout << "Updating finger " << NAME << endl;  
+//        cout << "Updating finger " << NAME << endl;  
         // if we are updating the first finger, then we should also update the successor.
         if (i==0) {
             successor = s;
@@ -237,12 +237,12 @@ Identifier *Node::toIdentifier() {
 void Node::stabilize() {
     Node *x = successor->predecessor;
     messageCount++;
-    cout << "stabilizing " << identifier -> getID() << endl;
+ //   cout << "stabilizing " << identifier -> getID() << endl;
     if (x != NULL && x->getIdentifier()->isInBetween(
                 this->getIdentifier(), successor->getIdentifier(), 0, 1)) {
         successor = x;
-        cout << "Node " << identifier->getID() << " changed successor to "
-            << x->getIdentifier()->getID() << endl;
+ //       cout << "Node " << identifier->getID() << " changed successor to "
+ //           << x->getIdentifier()->getID() << endl;
     }
     if (x == NULL) 
         // Don't bother notifying the other node.
@@ -259,11 +259,11 @@ void Node::stabilizeThread() {
 
 void Node::notify(Node *a, Node *b) {
     // Notify successor about the change in it's predecessor.
-    cout << "Notify " << a->getIdentifier() -> getID() << endl;
+//    cout << "Notify " << a->getIdentifier() -> getID() << endl;
     if (b -> predecessor == NULL) {
         b->predecessor = a;
-        cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
-            a -> getIdentifier() -> getID() << endl;
+//        cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
+//            a -> getIdentifier() -> getID() << endl;
         return;
     }
 
@@ -271,8 +271,8 @@ void Node::notify(Node *a, Node *b) {
             a->getIdentifier()->isInBetween(
                 b->predecessor->getIdentifier(), b->getIdentifier(), 0, 1)) {
         b->predecessor = a;
-        cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
-            a -> getIdentifier() -> getID() << endl;
+ //       cout << " Changing predecessor of " << b->getIdentifier()->getID() << " to " << 
+ //           a -> getIdentifier() -> getID() << endl;
     }
 
 }
@@ -299,28 +299,28 @@ void Node::fixFingersThread() {
  * Hash table operations.
  */
 void Node::addValueForKey(string key, string value) {
-    cout << "Trying to add " << key << " at " << NAME << endl; 
+ //   cout << "Trying to add " << key << " at " << NAME << endl; 
     Identifier *id = Identifier::toIdentifier(key);
     Node *x = findSuccessor(id);
     x -> keyMap[key] = value;
-    cout << "Added " << key << ":" << value << " at " << x -> NAME << endl;
-    cout << "--------------added---------" << messageCount << "-----------" << endl;
+ //   cout << "Added " << key << ":" << value << " at " << x -> NAME << endl;
+ //   cout << "--------------added---------" << messageCount << "-----------" << endl;
 }
 
 string Node::getValueForKey(string key) {
     Identifier *id = Identifier::toIdentifier(key);
     Node *x = findSuccessor(id);
     string val = x->keyMap[key];
-    if (val.length() != 0)
-    cout << "Retreiving value " << val << " for " << key << " at " << x->NAME <<endl; 
-    else cout << "ERROR while retreving " << key << " at " << x->NAME << endl;
+//    if (val.length() != 0)
+//    cout << "Retreiving value " << val << " for " << key << " at " << x->NAME <<endl; 
+//    else cout << "ERROR while retreving " << key << " at " << x->NAME << endl;
     return val;
 }
 
 void Node::removeValueForKey(string key) {
     string val = keyMap[key];
     keyMap.erase(key);
-    cout << "Erased " << val << " for " << key << " at " << NAME << endl;
+ //   cout << "Erased " << val << " for " << key << " at " << NAME << endl;
 
 }
 
