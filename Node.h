@@ -8,13 +8,15 @@
 #include <string>
 #include <iostream>
 #include <thread>
+#include <unordered_map>
 #include "Identifier.h"
 
 #define NODE_STATE_RUNNING 1 
 #define NODE_STATE_DEAD 2
 class FingerTable; 
 class Node {
-  private:  
+  private: 
+      std::unordered_map<std::string, std::string> keyMap; 
       Identifier *identifier;  
       Node *predecessor;
       Node *successor;
@@ -25,12 +27,12 @@ class Node {
       int state;
       void stabilize();
       void fixFingers(int index);
+      int address;
 
   public:
-    static int address;
     Node(int address);
     ~Node();
-
+    
     // This function should be called before doing any other operation. 
     void start();
     Identifier *getIdentifier() {return identifier;}
@@ -66,6 +68,14 @@ class Node {
      */ 
     static void notify(Node *a, Node *b);
     void printFingers();
+
+
+    /*
+     * Distributed hash table operations.
+     */
+    void addValueForKey(std::string key, std::string value);
+    std::string getValueForKey(std::string key);
+    void removeValueForKey(std::string key);
 };
 
 // This is important here.

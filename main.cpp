@@ -4,34 +4,36 @@
 #include "Node.h"
 
 using namespace std;
-int maxLen = 3;
+int maxLen = 4;
 int main(void) {
     Node *a = new Node(0);
-    a->start();
+    Node *b = new Node(3);
+    Node *c = new Node(7);
+    Node *d = new Node(9);
+    Node *e = new Node(15);
+    a -> start();
     a -> join(NULL);
     a -> printFingers(); 
    
-    Node *b = new Node(5);
     b -> start();
     b -> join(a);
     b -> printFingers();
     a -> printFingers();
-    cout << "Succ for A is " << a -> getSuccessor() -> getIdentifier() -> toValue() << endl;
     
-    Node *c = new Node(3);
     c -> start();
+    d -> start();
+    e -> start();
     c -> join(b);
-    
+    d -> join(c);
+    e -> join(d);
     a -> printFingers();
-//    Node *d1 = new Node();
-//    Node *d2 = new Node();
-//    Node *f = new Node();
-//    f -> start();
-//    f -> join(a);
-//    a -> printFingers();
     b -> printFingers();
     c -> printFingers();
-//    f -> printFingers();
+    d -> printFingers();
+    e -> printFingers();
+
+    a -> addValueForKey("4", "Atul");
+    c -> getValueForKey("4");
     return 0;
 }
 

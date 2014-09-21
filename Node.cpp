@@ -15,11 +15,9 @@ unsigned int stabilizeSleepTime = 400; //microseconds
 unsigned int fixFingerSleepTime = 1000; //microseconds
 extern int maxLen;
 
-int Node::address = -1;
 
 Node::Node(int ad) {
     // Create non-existing successor and predecessor.
-    cout << "Address is " << address << endl;
     this -> state = NODE_STATE_DEAD;
     address = ad;;
     cout << "Node " << address << " created." << endl;
@@ -71,18 +69,6 @@ Node* Node::findSuccessor(Identifier *id) {
     // If the id is between this and it's successor
     cout << "checking " << id->getID() << " between " 
         << identifier->getID() << " and " << successor->getIdentifier()->getID() << endl;
-    if (id->isInBetween(identifier, successor->getIdentifier(), 0, 1)) {
-        cout << "Is in between" << endl;
-  //      return successor;
-    }
-    /*
-    // Find closest preceding node and then forward the query to that.
-    else {
-        Node *n = closestPrecedingNode(id);
-        cout << NAME << " closest preceding node to " << id->toValue() << " is " << n->NAME << endl;
-        return n->findSuccessor(id);
-    }
-    */
     Node *n = findPredecessor(id);
     Node *k = n -> getSuccessor();
     cout << "Successor for " << id->toValue() << " is " << k->NAME << endl;
@@ -107,7 +93,7 @@ Node* Node::closestPrecedingNode(Identifier *id) {
 
 Node* Node::findPredecessor(Identifier *id) {
     Node *n = this;
-    while (!id->isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier(),0, 0)) {
+    while (!id->isInBetween(n->getIdentifier(), n->getSuccessor()->getIdentifier(),0, 1)) {
         cout << id -> toValue() << " is not in between " << n -> NAME << " and " <<
             n -> getSuccessor()-> NAME << endl;
         Node *k = n->closestPrecedingNode(id);
@@ -189,7 +175,7 @@ void Node::updateOthers() {
         myVal = (myVal < power) ? (myVal + maxValue) : myVal;
         // find the last node p whose ith finger might be n.
         Identifier *iden = Identifier::toIdentifier(
-                to_string(myVal - power));
+                to_string(myVal - power + 1));
         cout << NAME << " finding pred for " << iden->toValue() << endl;
         Node *pred = findPredecessor(iden);
         cout << "pred is " << pred->NAME << endl;
@@ -202,8 +188,8 @@ void Node::updateOthers() {
 
 void Node::updateFingerTable(Node *s, int i) {
     cout << NAME << " updating finger " << i << " with " << s-> NAME <<  endl;
-    cout << "finding if " << s->NAME << " is in b/w " << NAME <<  " " << fingerTable->fingers[i].node->NAME << endl;
-    if (s->getIdentifier()->isInBetween(identifier, 
+    cout << "finding if " << s->NAME << " is in b/w " << fingerTable->fingers[i].start->toValue() <<  " " << fingerTable->fingers[i].node->NAME << endl;
+    if (s->getIdentifier()->isInBetween(fingerTable->fingers[i].start, 
                 fingerTable->fingers[i].node->getIdentifier(), 1, 0)) {
         cout << "Updating finger " << NAME << endl;  
         // if we are updating the first finger, then we should also update the successor.
@@ -294,3 +280,29 @@ void Node::fixFingersThread() {
 
 }
 
+/*
+ * Hash table operations.
+ */
+void Node::addValueForKey(string key, string value) {
+    Identifier *id = Identifier::toIdentifier(key);
+    Node *x = findSuccessor(id);
+    x -> keyMap[key] = value;
+    cout << "Added " << key << ":" << value << " at " << x -> NAME << endl;
+}
+
+string Node::getValueForKey(string key) {
+    Identifier *id = Identifier::toIdentifier(key);
+    Node *x = findSuccessor(id);
+    string val = x->keyMap[key];
+    if (val.length() != 0)
+    cout << "Retreiving value " << val << " for " << key << " at " << x->NAME <<endl; 
+    else cout << "ERROR while retreving " << key << " at " << x->NAME << endl;
+    return val;
+}
+
+void Node::removeValueForKey(string key) {
+    string val = keyMap[key];
+    keyMap.erase(key);
+    cout << "Erased " << val << " for " << key << " at " << NAME << endl;
+
+}
