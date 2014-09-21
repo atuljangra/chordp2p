@@ -18,12 +18,12 @@ void initMap(long no) {
         map[i] = false;
 }
 
-double Driver::timeAdditions(int number) {
+long long Driver::timeAdditions(int number) {
     
     return timeAdditions(number, (int)ceil(log2(number)));
 }
 
-double Driver::timeAdditions(int number, int maxN) {
+long long Driver::timeAdditions(int number, int maxN) {
     // MaxLen would be equal to ceiling of log(number);
     maxLen = maxN;
     long maxNodes = pow(2.0, maxLen);
@@ -50,11 +50,12 @@ double Driver::timeAdditions(int number, int maxN) {
    
     Node::resetMessageCount();
     // Start clock.
-    clock_t start = clock(); 
+    auto start = chrono::high_resolution_clock::now();
     for (int i = 0; i < maxNodes - 1; i++) {
         nodes[getUniqueKey(true)]->addValueForKey(to_string(i), to_string(i + maxNodes));
     }
-    clock_t end = clock();
+    auto end = chrono::high_resolution_clock::now();
+    auto elapsed = end - start;
     long count = Node::getMessageCount();
     for (int i = 0; i < maxNodes; i++) {
         if (map[i] == true) {
@@ -62,12 +63,12 @@ double Driver::timeAdditions(int number, int maxN) {
         }
     }
     
-    clock_t timeTaken = (end - start) / (double)(CLOCKS_PER_SEC / 1000);
+    long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
     cout << "Time taken for " << maxNodes << " msgs on " << number << 
-        " Nodes is " << timeTaken << "ms!" << endl;
+        " Nodes is " << microseconds << "ms!" << endl;
     cout << "Messages passed " << count << endl;
     map.erase(map.begin(), map.end());
-    return timeTaken;
+    return microseconds;
 }
 
 

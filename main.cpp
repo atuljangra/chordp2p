@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
+
 #include "Node.h"
 #include "Driver.h"
 
+#define FILENAME "insertTime.txt"
 using namespace std;
 int maxLen = 0;
 int main(void) {
@@ -39,6 +42,20 @@ int main(void) {
 */
     Driver *d = new Driver();
     d -> timeAdditions(5); 
+    ofstream myFile;
+    myFile.open(FILENAME);
+    
+    for (int i = 0; i < 2000; i+=10) {
+        myFile << i << " ";
+    }
+    myFile << endl;
+    for (int i = 1; i < 2000; i+=10) {
+        double time = d -> timeAdditions(i);
+        myFile << time << " ";
+
+    }
+    myFile << endl;
+    myFile.close();
     return 0;
 }
 
